@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Listar Categorias</title>
+        <script type="text/javascript">
+
+            // Váriavel para o objecto XMLHttpRequest
+            var xmlHttpObj;
+
+            function CreateXmlHttpRequestObject( )
+            {
+                // detecção do browser simplificada
+                // e sem tratamento de excepções
+                xmlHttpObj = null;
+                if (window.XMLHttpRequest) // IE 7 e Firefox
+                {
+                    xmlHttpObj = new XMLHttpRequest()
+
+                }
+                else if (window.ActiveXObject) // IE 5 e 6
+                {
+                    xmlHttpObj = new ActiveXObject("Microsoft.XMLHTTP")
+                }
+                return xmlHttpObj;
+            }
+
+            function MakeXMLHTTPCall()
+            {
+                xmlHttpObj = CreateXmlHttpRequestObject();
+
+                if (xmlHttpObj)
+                {
+                    // Definição do URL para efectuar pedido HTTP - método GET
+                    xmlHttpObj.open("GET", "selectCategorias.php", true);
+
+
+                   // Registo do EventHandler
+                    xmlHttpObj.onreadystatechange = stateHandler;
+
+                    xmlHttpObj.send(null);
+                }
+
+            }
+
+            function stateHandler()
+            {
+                if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
+                {
+                    //alert(xmlHttpObj.responseText);
+                    //propriedade responseXML que devolve a resposta do servidor
+
+                    var docxml = xmlHttpObj.responseText;
+
+                    // manually parse to XML DOM object 
+                    var parser = new DOMParser();
+
+                    var xmlDoc;
+                    try {
+                        xmlDoc = parser.parseFromString(docxml, "text/xml");
+                    } catch (e) {
+                        alert("XML parsing error.");
+                        return false;
+                    }
+                    ;
+
+
+                    // lista de nós com Tag Categoria                    
+                    var nodelist = xmlDoc.getElementsByTagName("categoria");
+
+                    //alert(nodelist[0].childNodes[0].nodeValue);
+                    // nodelist[0] - primeiro nó da lista (<Categoria> ???? </Categoria>)
+                    // childNodes[0] - primeiro filho do nó é um nó texto  
+                    // nodevalue - valor do conteudo do nó texto ( ??? )
+
+                    var b = 0;
+                    for (i = 0; i < nodelist.length; i++) {
+
+                        for (j = i + 1; j < nodelist.length; j++) {
+                            //Verifica se existem iguais
+                            if (nodelist[i].childNodes[0].nodeValue == nodelist[j].childNodes[0].nodeValue) {
+                                b = 1;
+                            }
+                        }
+                        if (b == 0) {
+                            var fname = nodelist[i].childNodes[0].nodeValue;
+
+                            var opt = document.createElement('option');
+                            opt.appendChild(document.createTextNode(fname));
+                            var op = "<option> " + fname + "</option>";
+
+                            // alteração do conteúdo textual do div
+                            document.getElementById("selectCategoria").appendChild(opt);
+                        }
+                        b = 0;
+
+
+                    }
+
+
+
+
+
+                }
+            }
+
+        </script>
+    </head>
+    <body onload="MakeXMLHTTPCall()">
+        Categorias :
+
+        <select name="selectCategoria" id="selectCategoria" onchange="">
+
+        </select>
+    </body>
+</html>
