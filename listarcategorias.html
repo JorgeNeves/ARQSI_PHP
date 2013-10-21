@@ -25,7 +25,7 @@
                 return xmlHttpObj;
             }
 
-            function MakeXMLHTTPCall()
+            function carregarCategorias()
             {
                 xmlHttpObj = CreateXmlHttpRequestObject();
 
@@ -35,7 +35,7 @@
                     xmlHttpObj.open("GET", "selectCategorias.php", true);
 
 
-                   // Registo do EventHandler
+                    // Registo do EventHandler
                     xmlHttpObj.onreadystatechange = stateHandler;
 
                     xmlHttpObj.send(null);
@@ -93,24 +93,89 @@
                             document.getElementById("selectCategoria").appendChild(opt);
                         }
                         b = 0;
-
-
                     }
+                }
+            }
+
+            function escolheuCategoria( ) {
+
+                xmlHttpObj = CreateXmlHttpRequestObject();
+
+                var x = document.getElementById("selectCategoria").selectedIndex;
+                var y = document.getElementById("selectCategoria").options;
+
+                var concStr = y[x].text;
+                if (xmlHttpObj)
+                {
+                    // Definição do URL para efectuar pedido HTTP - método GET
+                    xmlHttpObj.open("GET", "listarLivros.php?categoria=" + concStr, true);
 
 
+                    // Registo do EventHandler
+                    xmlHttpObj.onreadystatechange = PreencherLivros;
 
+                    xmlHttpObj.send(null);
+                }
 
+            }
 
+            function PreencherLivros(   ) {
+
+                if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
+                {
+                    var docxml = xmlHttpObj.responseText;
+
+                    // manually parse to XML DOM object 
+
+                    var parser = new DOMParser();
+
+                    var xmlDoc;
+                    try {
+                        xmlDoc = parser.parseFromString(docxml, "text/xml");
+                    } catch (e) {
+                        alert("XML parsing error.");
+                        return false;
+                    };
+                    // lista de nós com Tag Categoria                    
+                    var nodelist = xmlDoc.getElementsByTagName("title");
+                    
+                    var nLivros = document.getElementById("nLivros").value;
+                    var tam;
+                    ((nLivros<nodelist.length)?tam=nLivros:tam=nodelist.length);
+
+                    while (selectLivros.firstChild) {
+                        selectLivros.removeChild(selectLivros.firstChild);
+                    }
+                    //alert(nodelist.length);
+                    for (i = 0; i < tam; i++) {
+                        var tname = nodelist[i].childNodes[0].nodeValue;
+
+                        var opt = document.createElement('option');
+
+                        opt.appendChild(document.createTextNode(tname));
+                        var op = "<option> " + tname + "</option>";
+
+                        // alteração do conteúdo textual do div
+                        document.getElementById("selectLivros").appendChild(opt);
+                    }
                 }
             }
 
         </script>
     </head>
-    <body onload="MakeXMLHTTPCall()">
-        Categorias :
+    <body onload="carregarCategorias();">
+        <form action="" method="get">
+            Categorias :    
+            <select id="selectCategoria" onchange="escolheuCategoria();"> </select>
 
-        <select name="selectCategoria" id="selectCategoria" onchange="">
+            <p >
+                Numero de Livros a mostrar: <input type="text" size="3" id="nLivros" value="50" onchange="escolheuCategoria();"/> 
+            </p>
+            <select id="selectLivros" >
 
-        </select>
+            </select>
+
+        </form>
+
     </body>
 </html>
