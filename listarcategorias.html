@@ -142,7 +142,7 @@
                     var nLivros = document.getElementById("nLivros").value;
                     var tam;
                     ((nLivros<nodelist.length)?tam=nLivros:tam=nodelist.length);
-
+                    alert(tam);
                     while (selectLivros.firstChild) {
                         selectLivros.removeChild(selectLivros.firstChild);
                     }
@@ -160,7 +160,65 @@
                     }
                 }
             }
+            function escolheuEditora( ) {
 
+                xmlHttpObj = CreateXmlHttpRequestObject();
+
+                var editora = document.getElementById("selectEditora").value;
+                var nlivros = document.getElementById("nTopLivros").value;
+                
+                if (xmlHttpObj)
+                {
+                    // Definição do URL para efectuar pedido HTTP - método GET
+                    xmlHttpObj.open("GET", "listarnlivros.php?neditora=" + editora+"&nlivros="+nlivros, true);
+                    
+                    // Registo do EventHandler
+                    xmlHttpObj.onreadystatechange = escolheuNLivroEditora;
+
+                    xmlHttpObj.send(null);
+                }
+
+            }
+            
+            function escolheuNLivroEditora( ){
+                  if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
+                {
+             var docxml = xmlHttpObj.responseText;
+                  
+            // manually parse to XML DOM object 
+                    var parser = new DOMParser();
+
+                    var xmlDoc;
+                    try {
+                        xmlDoc = parser.parseFromString(docxml, "text/xml");
+                    } catch (e) {
+                        return false;
+                    };
+                    // lista de nós com Tag Categoria                    
+                    var nodelist = xmlDoc.getElementsByTagName("title");
+                    
+                    //var nLivros = document.getElementById("nTopLivros").value;
+                    //var tam;
+                    //((nLivros<nodelist.length)?tam=nLivros:tam=nodelist.length);
+                    var tam=nodelist.length;
+                    while (toplivros.firstChild) {
+                        toplivros.removeChild(toplivros.firstChild);
+                    }
+                    //alert(nodelist.length);
+                    for (i = 0; i < tam; i++) {
+                        var tname = nodelist[i].childNodes[0].nodeValue;
+
+                        var opt = document.createElement('option');
+
+                        opt.appendChild(document.createTextNode(tname));
+                        var op = "<option> " + tname + "</option>";
+
+                        // alteração do conteúdo textual do div
+                        document.getElementById("toplivros").appendChild(opt);
+                    }  
+                }
+            }
+            
         </script>
     </head>
     <body onload="carregarCategorias();">
@@ -174,7 +232,18 @@
             <select id="selectLivros" >
 
             </select>
-
+            Editora:
+            <select id="selectEditora" onchange="escolheuEditora();">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            
+            <p>
+                Numero de Livros a mostrar: <input type="text" size="3" id="nTopLivros" value="10" onchange="escolheuEditora();"/> 
+            </p>
+            <br>
+            <select id="toplivros"></select>
+            
         </form>
 
     </body>
