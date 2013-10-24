@@ -181,6 +181,7 @@
             }
             
             function escolheuNLivroEditora( ){
+                
                   if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
                 {
              var docxml = xmlHttpObj.responseText;
@@ -196,25 +197,40 @@
                     };
                     // lista de nós com Tag Categoria                    
                     var nodelist = xmlDoc.getElementsByTagName("title");
+                   
+                    var tabela=document.getElementById("idTabela");
                     
                     //var nLivros = document.getElementById("nTopLivros").value;
                     //var tam;
                     //((nLivros<nodelist.length)?tam=nLivros:tam=nodelist.length);
                     var tam=nodelist.length;
-                    while (toplivros.firstChild) {
-                        toplivros.removeChild(toplivros.firstChild);
+                    while(tabela.firstChild){
+                        tabela.removeChild(tabela.firstChild);
                     }
+            var tr=document.createElement("tr");        
+            var th=document.createElement("th");
+                    var tht=document.createTextNode("Titulo do Livro");
+            th.appendChild(tht);
+            tr.appendChild(th);
+            tabela.appendChild(tr);        
                     //alert(nodelist.length);
                     for (i = 0; i < tam; i++) {
                         var tname = nodelist[i].childNodes[0].nodeValue;
-
-                        var opt = document.createElement('option');
-
-                        opt.appendChild(document.createTextNode(tname));
-                        var op = "<option> " + tname + "</option>";
-
+                        
+                        var tr1 = document.createElement('tr');
+                        var td =document.createElement('td');
+                        var link=document.createElement('a');
+                        link.setAttribute("href",tname);
+                        link.appendChild(document.createTextNode(tname));
+                        //var tdt=document.createTextNode(tname);
+                        td.appendChild(link);
+                        tr1.appendChild(td);
+                        tabela.appendChild(tr1);
+//opt.appendChild(document.createTextNode(tname));
+                        //var op = "<option> " + tname + "</option>";
+                        //opt.setAttribute("value","www.google.pt");
                         // alteração do conteúdo textual do div
-                        document.getElementById("toplivros").appendChild(opt);
+                        //document.getElementById("toplivros").appendChild(opt);
                     }  
                 }
             }
@@ -242,7 +258,10 @@
                 Numero de Livros a mostrar: <input type="text" size="3" id="nTopLivros" value="10" onchange="escolheuEditora();"/> 
             </p>
             <br>
-            <select id="toplivros"></select>
+            <table id="idTabela" border="1">
+             
+	    </table>
+
             
         </form>
 
