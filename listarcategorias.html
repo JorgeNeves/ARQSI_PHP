@@ -220,9 +220,14 @@
                         var tr1 = document.createElement('tr');
                         var td =document.createElement('td');
                         var link=document.createElement('a');
-                        link.setAttribute("href",tname);
-                        link.appendChild(document.createTextNode(tname));
-                        //var tdt=document.createTextNode(tname);
+                        var linkfunction="javascript:infoLivro(";
+                        linkfunction+=tname;
+                        linkfunction+=");";
+                        link.setAttribute("href","javascript:infoLivro('"+tname+"');");
+                        var titulo=document.createTextNode(tname);
+                        link.appendChild(titulo);
+                        
+                //var tdt=document.createTextNode(tname);
                         td.appendChild(link);
                         tr1.appendChild(td);
                         tabela.appendChild(tr1);
@@ -234,7 +239,9 @@
                     }  
                 }
             }
-            
+            function infoLivro(titulo){
+               alert(titulo);
+            }
         </script>
     </head>
     <body onload="carregarCategorias();">
