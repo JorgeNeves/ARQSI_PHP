@@ -1,7 +1,10 @@
 
 <!DOCTYPE html>
+
 <html>
     <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
         <title> Listar Categorias</title>
         <script type="text/javascript">
 
@@ -135,14 +138,14 @@
                     } catch (e) {
                         alert("XML parsing error.");
                         return false;
-                    };
+                    }
+                    ;
                     // lista de nós com Tag Categoria                    
                     var nodelist = xmlDoc.getElementsByTagName("title");
-                    
+
                     var nLivros = document.getElementById("nLivros").value;
                     var tam;
-                    ((nLivros<nodelist.length)?tam=nLivros:tam=nodelist.length);
-                    alert(tam);
+                    ((nLivros < nodelist.length) ? tam = nLivros : tam = nodelist.length);
                     while (selectLivros.firstChild) {
                         selectLivros.removeChild(selectLivros.firstChild);
                     }
@@ -166,12 +169,12 @@
 
                 var editora = document.getElementById("selectEditora").value;
                 var nlivros = document.getElementById("nTopLivros").value;
-                
+
                 if (xmlHttpObj)
                 {
                     // Definição do URL para efectuar pedido HTTP - método GET
-                    xmlHttpObj.open("GET", "listarnlivros.php?neditora=" + editora+"&nlivros="+nlivros, true);
-                    
+                    xmlHttpObj.open("GET", "listarnlivros.php?neditora=" + editora + "&nlivros=" + nlivros, true);
+
                     // Registo do EventHandler
                     xmlHttpObj.onreadystatechange = escolheuNLivroEditora;
 
@@ -179,14 +182,14 @@
                 }
 
             }
-            
-            function escolheuNLivroEditora( ){
-                
-                  if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
+
+            function escolheuNLivroEditora( ) {
+
+                if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
                 {
-             var docxml = xmlHttpObj.responseText;
-                  
-            // manually parse to XML DOM object 
+                    var docxml = xmlHttpObj.responseText;
+
+                    // manually parse to XML DOM object 
                     var parser = new DOMParser();
 
                     var xmlDoc;
@@ -194,54 +197,101 @@
                         xmlDoc = parser.parseFromString(docxml, "text/xml");
                     } catch (e) {
                         return false;
-                    };
+                    }
+                    ;
                     // lista de nós com Tag Categoria                    
                     var nodelist = xmlDoc.getElementsByTagName("title");
-                   
-                    var tabela=document.getElementById("idTabela");
-                    
-                    //var nLivros = document.getElementById("nTopLivros").value;
-                    //var tam;
-                    //((nLivros<nodelist.length)?tam=nLivros:tam=nodelist.length);
-                    var tam=nodelist.length;
-                    while(tabela.firstChild){
+
+                    var tabela = document.getElementById("idTabela");
+
+                    var tam = nodelist.length;
+                    while (tabela.firstChild) {
                         tabela.removeChild(tabela.firstChild);
                     }
-            var tr=document.createElement("tr");        
-            var th=document.createElement("th");
-                    var tht=document.createTextNode("Titulo do Livro");
-            th.appendChild(tht);
-            tr.appendChild(th);
-            tabela.appendChild(tr);        
-                    //alert(nodelist.length);
+                    var tr = document.createElement("tr");
+                    var th = document.createElement("th");
+                    var tht = document.createTextNode("Titulo do Livro");
+                    th.appendChild(tht);
+                    tr.appendChild(th);
+                    tabela.appendChild(tr);
                     for (i = 0; i < tam; i++) {
                         var tname = nodelist[i].childNodes[0].nodeValue;
-                        
+
                         var tr1 = document.createElement('tr');
-                        var td =document.createElement('td');
-                        var link=document.createElement('a');
-                        var linkfunction="javascript:infoLivro(";
-                        linkfunction+=tname;
-                        linkfunction+=");";
-                        link.setAttribute("href","javascript:infoLivro('"+tname+"');");
-                        var titulo=document.createTextNode(tname);
+                        var td = document.createElement('td');
+                        var link = document.createElement('a');
+                        var linkfunction = "javascript:infoLivro(";
+                        linkfunction += tname;
+                        linkfunction += ");";
+                        link.setAttribute("href", "javascript:infoLivro('" + tname + "');");
+                        var titulo = document.createTextNode(tname);
                         link.appendChild(titulo);
-                        
-                //var tdt=document.createTextNode(tname);
+
+                        //var tdt=document.createTextNode(tname);
                         td.appendChild(link);
                         tr1.appendChild(td);
                         tabela.appendChild(tr1);
-//opt.appendChild(document.createTextNode(tname));
-                        //var op = "<option> " + tname + "</option>";
-                        //opt.setAttribute("value","www.google.pt");
-                        // alteração do conteúdo textual do div
-                        //document.getElementById("toplivros").appendChild(opt);
-                    }  
+                    }
                 }
             }
-            function infoLivro(titulo){
-               alert(titulo);
+            function infoLivro(titulo) {
+                xmlHttpObj = CreateXmlHttpRequestObject();
+
+
+                if (xmlHttpObj)
+                {
+                    // Definição do URL para efectuar pedido HTTP - método GET
+                    titulo1 = encodeURIComponent(titulo.trim());
+                    xmlHttpObj.open("GET", "listarinfolivros.php?titulo=" + titulo1, true);
+
+
+                    // Registo do EventHandler
+                    xmlHttpObj.onreadystatechange = PrintinfoLivros;
+
+                    xmlHttpObj.send(null);
+                }
+
             }
+
+            function PrintinfoLivros() {
+                var docxml = xmlHttpObj.responseText;
+
+                // manually parse to XML DOM object 
+
+
+                var parser = new DOMParser();
+
+                var xmlDoc;
+                //alert(docxml);
+                try {
+                    xmlDoc = parser.parseFromString(docxml, "text/xml");
+                } catch (e) {
+                    alert("XML parsing error.");
+                    return false;
+                }
+                var info="Informações do Livro:\n";
+                // lista de nós com Tag Categoria                    
+                var titulo = xmlDoc.getElementsByTagName("title");
+                var titulo1=titulo[0].childNodes[0].nodeValue;
+                info+="Titulo:"+titulo1+"\n";
+                var autor = xmlDoc.getElementsByTagName("author");
+                var autor1=autor[0].childNodes[0].nodeValue;
+                info+="Autor:"+autor1+"\n";
+                var categoria = xmlDoc.getElementsByTagName("category");
+                var categoria1=categoria[0].childNodes[0].nodeValue;
+                info+="Categoria:"+categoria1+"\n";
+                var ISBN = xmlDoc.getElementsByTagName("isbn");
+                var ISBN1=ISBN[0].childNodes[0].nodeValue;
+                info+="ISBN:"+ISBN1+"\n";
+                var Ano = xmlDoc.getElementsByTagName("publicacao");
+                var Ano1=Ano[0].childNodes[0].nodeValue;
+                info+="Ano de Publicacao:"+Ano1+"\n";
+                
+                alert(info);
+                
+            }
+
+
         </script>
     </head>
     <body onload="carregarCategorias();">
@@ -260,16 +310,16 @@
                 <option value="1">1</option>
                 <option value="2">2</option>
             </select>
-            
+
             <p>
                 Numero de Livros a mostrar: <input type="text" size="3" id="nTopLivros" value="10" onchange="escolheuEditora();"/> 
             </p>
             <br>
             <table id="idTabela" border="1">
-             
-	    </table>
 
-            
+            </table>
+
+
         </form>
 
     </body>
