@@ -163,7 +163,7 @@
                     }
                 }
             }
-            function escolheuEditora( ) {
+            function escolheuEditora() {
 
                 xmlHttpObj = CreateXmlHttpRequestObject();
 
@@ -183,8 +183,8 @@
 
             }
 
-            function escolheuNLivroEditora( ) {
-
+            function escolheuNLivroEditora(pag) {
+               
                 if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
                 {
                     var docxml = xmlHttpObj.responseText;
@@ -201,9 +201,10 @@
                     ;
                     // lista de nós com Tag Categoria                    
                     var nodelist = xmlDoc.getElementsByTagName("title");
-
+                    var editora=xmlDoc.getElementsByTagName("editora");
+                    var editora1=editora[0].childNodes[0].nodeValue;
                     var tabela = document.getElementById("idTabela");
-
+                    
                     var tam = nodelist.length;
                     while (tabela.firstChild) {
                         tabela.removeChild(tabela.firstChild);
@@ -214,16 +215,19 @@
                     th.appendChild(tht);
                     tr.appendChild(th);
                     tabela.appendChild(tr);
-                    for (i = 0; i < tam; i++) {
+                    if(isNaN(pag)){
+                        pag=1;
+                    }
+                    for (i = pag*5-5; i < pag*5; i++) {
                         var tname = nodelist[i].childNodes[0].nodeValue;
-
+                        tname=tname.trim();
                         var tr1 = document.createElement('tr');
                         var td = document.createElement('td');
                         var link = document.createElement('a');
                         var linkfunction = "javascript:infoLivro(";
                         linkfunction += tname;
                         linkfunction += ");";
-                        link.setAttribute("href", "javascript:infoLivro('" + tname + "');");
+                        link.setAttribute("href", "javascript:infoLivro('" + tname + "',"+editora1+");");
                         var titulo = document.createTextNode(tname);
                         link.appendChild(titulo);
 
@@ -232,18 +236,35 @@
                         tr1.appendChild(td);
                         tabela.appendChild(tr1);
                     }
+                    var div = document.getElementById('div1');
+                    while (div.firstChild) {
+                        div.removeChild(div.firstChild);
+                    }
+                    div.appendChild(document.createTextNode("Página:"));
+                    var npags=tam/5;
+                    
                 }
+                    for(i=0;i<npags;i++){
+                    var pag=document.createElement('a');
+                    pag.setAttribute("href","javascript:escolheuNLivroEditora("+(i+1)+")");
+                    var numpag=document.createTextNode(i+1);
+                    pag.appendChild(numpag);
+                    div.appendChild(pag);
+                }
+                
             }
-            function infoLivro(titulo) {
+            //function infoLivro(titulo) {
+            function infoLivro(titulo,editora){
                 xmlHttpObj = CreateXmlHttpRequestObject();
-
+                
 
                 if (xmlHttpObj)
                 {
                     // Definição do URL para efectuar pedido HTTP - método GET
-                    titulo1 = encodeURIComponent(titulo.trim());
-                    xmlHttpObj.open("GET", "listarinfolivros.php?titulo=" + titulo1, true);
-
+                    var titulo1 = encodeURIComponent(titulo.trim());
+                    //var editora = document.getElementById("selectEditora").value;
+                    xmlHttpObj.open("GET", "listarinfolivros.php?titulo=" + titulo1 + "&editora=" + editora, true);
+                    //xmlHttpObj.open("GET", "listarinfolivros.php?titulo=" + titulo1,true);
 
                     // Registo do EventHandler
                     xmlHttpObj.onreadystatechange = PrintinfoLivros;
@@ -269,26 +290,26 @@
                     alert("XML parsing error.");
                     return false;
                 }
-                var info="Informações do Livro:\n";
-                // lista de nós com Tag Categoria                    
+                var info = "Informações do Livro:\n";
+                // Preenchimento da string com informações do livro                    
                 var titulo = xmlDoc.getElementsByTagName("title");
-                var titulo1=titulo[0].childNodes[0].nodeValue;
-                info+="Titulo:"+titulo1+"\n";
+                var titulo1 = titulo[0].childNodes[0].nodeValue;
+                info += "Titulo:" + titulo1 + "\n";
                 var autor = xmlDoc.getElementsByTagName("author");
-                var autor1=autor[0].childNodes[0].nodeValue;
-                info+="Autor:"+autor1+"\n";
+                var autor1 = autor[0].childNodes[0].nodeValue;
+                info += "Autor:" + autor1 + "\n";
                 var categoria = xmlDoc.getElementsByTagName("category");
-                var categoria1=categoria[0].childNodes[0].nodeValue;
-                info+="Categoria:"+categoria1+"\n";
+                var categoria1 = categoria[0].childNodes[0].nodeValue;
+                info += "Categoria:" + categoria1 + "\n";
                 var ISBN = xmlDoc.getElementsByTagName("isbn");
-                var ISBN1=ISBN[0].childNodes[0].nodeValue;
-                info+="ISBN:"+ISBN1+"\n";
+                var ISBN1 = ISBN[0].childNodes[0].nodeValue;
+                info += "ISBN:" + ISBN1 + "\n";
                 var Ano = xmlDoc.getElementsByTagName("publicacao");
-                var Ano1=Ano[0].childNodes[0].nodeValue;
-                info+="Ano de Publicacao:"+Ano1+"\n";
-                
+                var Ano1 = Ano[0].childNodes[0].nodeValue;
+                info += "Ano de Publicacao:" + Ano1 + "\n";
+
                 alert(info);
-                
+                escolheuEditora(); //coloquei para voltar à primeira página porque estava a dar um erro
             }
 
 
@@ -305,21 +326,26 @@
             <select id="selectLivros" >
 
             </select>
-            Editora:
+            <div id="Page" >
+                <br>
+                Editora:
             <select id="selectEditora" onchange="escolheuEditora();">
                 <option value="1">1</option>
                 <option value="2">2</option>
             </select>
 
             <p>
-                Numero de Livros a mostrar: <input type="text" size="3" id="nTopLivros" value="10" onchange="escolheuEditora();"/> 
+                Numero de Livros a mostrar na editora: <input type="text" size="3" id="nTopLivros" value="10" onchange="escolheuEditora();"/> 
             </p>
             <br>
             <table id="idTabela" border="1">
-
+                
+                
             </table>
-
-
+            <div id="div1">
+               
+            </div>
+            </div>
         </form>
 
     </body>
