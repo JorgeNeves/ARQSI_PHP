@@ -1,8 +1,10 @@
 <?php
     $cat = $_GET['categoria'];
-    $respostaXML = "<tudo>";
-    $respostaXML .=file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora2.php?categoria=" .$cat); 
-    $respostaXML .=file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora1.php?categoria=" .$cat);
-    $respostaXML .= "</tudo>";
-    echo $respostaXML; 
+    header ("Content-Type:text/xml");
+    echo "<?xml version=\"1.0\"?>";
+    echo "<tudo>";
+    echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora2.php?categoria=" .$cat); 
+    echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora1.php?categoria=" .$cat);
+    echo "</tudo>";
+
 ?>
