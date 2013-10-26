@@ -31,7 +31,7 @@
             function carregarCategorias()
             {
                 xmlHttpObj = CreateXmlHttpRequestObject();
-
+                
                 if (xmlHttpObj)
                 {
                     // Definição do URL para efectuar pedido HTTP - método GET
@@ -40,7 +40,7 @@
                     //xmlHttpObj.setRequestHeader("Content-Type:text/xml");
                     // Registo do EventHandler
                     xmlHttpObj.onreadystatechange = stateHandler;
-
+                    
                     xmlHttpObj.send(null);
                 }
 
@@ -53,7 +53,7 @@
                     //propriedade responseXML que devolve a resposta do servidor
 
                     var docxml = xmlHttpObj.responseXML;
-
+                   
                     // lista de nós com Tag Categoria                    
                     var nodelist = docxml.getElementsByTagName("categoria");
 
@@ -125,12 +125,9 @@
                     //alert(nodelist.length);
                     for (i = 0; i < tam; i++) {
                         var tname = nodelist[i].childNodes[0].nodeValue;
-
                         var opt = document.createElement('option');
-
                         opt.appendChild(document.createTextNode(tname));
                         var op = "<option> " + tname + "</option>";
-
                         // alteração do conteúdo textual do div
                         document.getElementById("selectLivros").appendChild(opt);
                     }
