@@ -1,0 +1,25 @@
+div.geral {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    border: 1px solid black;
+    background: firebrick;
+}
+
+div.box {
+    width: 40%;
+    float:  left;
+    border: 1px solid black;
+    background: orange;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+div.box1 {
+    width: 55%;
+    float:  right;
+    border: 1px solid black;
+    background: darkkhaki;
+    margin-top: 10px;
+    margin-right: 20px;
+}

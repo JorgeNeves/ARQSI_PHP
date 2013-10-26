@@ -1,7 +1,6 @@
 <?php
 
 class LogDAL {
-
     private $conn;
 
     function __construct() {
@@ -27,7 +26,5 @@ class LogDAL {
         }        
     }
 }
+
 ?>
-
-
-}

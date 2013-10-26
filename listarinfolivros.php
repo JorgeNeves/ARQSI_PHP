@@ -13,4 +13,17 @@
     }
     echo "</tudo>";
     
+    require_once 'LogDAL.php';
+    $dal = new LogDAL();
+
+    $user = "";
+    $hora = date("H:i:s");
+    $data = date("Y-n-j");
+
+    $link = $_SERVER['SERVER_NAME'] . $_SERVER["PHP_SELF"] . "?titulo=" . $titulo1 . "&editora=" . $editora;
+
+    $sql = "INSERT INTO LOG (User, Hora,Data,Link) Values('$user','$hora','$data','$link')";
+
+    $dal->insert($sql);
+    
 ?>
