@@ -189,9 +189,6 @@
                         var tr1 = document.createElement('tr');
                         var td = document.createElement('td');
                         var link = document.createElement('a');
-                        var linkfunction = "javascript:infoLivro(";
-                        linkfunction += tname;
-                        linkfunction += ");";
                         link.setAttribute("href", "javascript:infoLivro('" + tname + "'," + editora1 + ");");
                         var titulo = document.createTextNode(tname);
                         link.appendChild(titulo);
@@ -221,7 +218,7 @@
             //function infoLivro(titulo) {
             function infoLivro(titulo, editora) {
                 xmlHttpObj = CreateXmlHttpRequestObject();
-
+                
 
                 if (xmlHttpObj)
                 {
@@ -233,15 +230,15 @@
 
                     // Registo do EventHandler
                     xmlHttpObj.onreadystatechange = PrintinfoLivros;
-
                     xmlHttpObj.send(null);
                 }
 
             }
 
             function PrintinfoLivros() {
-                var docxml = xmlHttpObj.responseXML;
-
+        if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
+                {        
+        var docxml = xmlHttpObj.responseXML;
                 
                 
                 var info = "Informações do Livro:\n";
@@ -271,6 +268,8 @@
                 alert(info);
                 escolheuEditora(); //coloquei para voltar à primeira página porque estava a dar um erro
             }
+            
+        }
 
 
         </script>
