@@ -8,7 +8,7 @@ if ($_GET['categoria'] == "todas") {
     foreach ($arr_editora as $books) {
         foreach ($books as $book) {
             foreach ($book as $value) {
-                echo "<category>" . $value['category'] . "</category>";
+                echo "<categoria>" . $value['category'] . "</categoria>";
             }
         }
     }
