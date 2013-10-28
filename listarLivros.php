@@ -5,6 +5,7 @@
     echo "<tudo>";
     echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora2.php?categoria=" .$cat); 
     echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora1.php?categoria=" .$cat);
+    echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~i110603/editora3.php?categoria=" .$cat);
     echo "</tudo>";
     
     require_once 'LogDAL.php';

@@ -63,7 +63,7 @@
                     //propriedade responseXML que devolve a resposta do servidor
 
                     var docxml = xmlHttpObj.responseXML;
-                  // alert(xmlHttpObj.responseText);
+
                     // lista de nós com Tag Categoria                    
                     var nodelist = docxml.getElementsByTagName("categoria");
 
@@ -252,6 +252,7 @@
         if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
                 {        
         var docxml = xmlHttpObj.responseXML;
+        alert(xmlHttpObj.responseText);
                 
                 
                 var info = "Informações do Livro:\n";
@@ -309,6 +310,7 @@
                 <select id="selectEditora" onchange="escolheuEditora();">
                     <option value="1">1</option>
                     <option value="2">2</option>
+                    <option value="3">3</option>
                 </select>
 
                 <p>

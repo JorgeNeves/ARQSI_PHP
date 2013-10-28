@@ -6,8 +6,10 @@ echo "<?xml version=\"1.0\"?>";
 echo "<tudo>";
 if (intval($editora) == 1) {
     echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora1.php?numero=" . $nlivros);
-} else {
+}else if(intval($editora) == 2) {
     echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora2.php?numero=" . $nlivros);
+}else if(intval($editora) == 3){
+    echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~i110603/editora3.php?numero=" . $nlivros);
 }
 echo "<editora>" .$editora . "</editora>";
 echo "</tudo>";
