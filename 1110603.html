@@ -9,7 +9,7 @@
 
         <style type="text/css">
 
-       @import url("estilos.css");
+            @import url("estilos.css");
 
         </style>
         <script type="text/javascript">
@@ -27,13 +27,9 @@
                     xmlHttpObj = new XMLHttpRequest()
 
                 }
-                else if (window.ActiveXObject) // IE 5 e 6
+                else  // IE 5 e 6
                 {
                     xmlHttpObj = new ActiveXObject("Microsoft.XMLHTTP")
-                }
-                else
-                {
-                    return new ActiveXObject("MSXML2.XMLHTTP.3.0");
                 }
                 return xmlHttpObj;
             }
@@ -41,7 +37,7 @@
             function carregarCategorias()
             {
                 xmlHttpObj = CreateXmlHttpRequestObject();
-                
+
                 if (xmlHttpObj)
                 {
                     // Definição do URL para efectuar pedido HTTP - método GET
@@ -50,7 +46,7 @@
                     //xmlHttpObj.setRequestHeader("Content-Type:text/xml");
                     // Registo do EventHandler
                     xmlHttpObj.onreadystatechange = stateHandler;
-                    
+
                     xmlHttpObj.send(null);
                 }
 
@@ -113,7 +109,7 @@
                     xmlHttpObj.onreadystatechange = PreencherLivros;
 
                     xmlHttpObj.send(null);
-                }else
+                } else
                 {
                     return new ActiveXObject("MSXML2.XMLHTTP.3.0");
                 }
@@ -172,17 +168,17 @@
                 if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
                 {
                     var docxml = xmlHttpObj.responseXML;
-                    
+
                     // lista de nós com Tag Categoria                    
                     var nodelist = docxml.getElementsByTagName("title");
-                    
+
                     var editora = docxml.getElementsByTagName("editora");
-                    
-                    
+
+
                     var editora1 = editora[0].childNodes[0].nodeValue;
-                    
+
                     var tabela = document.getElementById("idTabela");
-                    
+
                     var tam = nodelist.length;
                     while (tabela.firstChild) {
                         tabela.removeChild(tabela.firstChild);
@@ -228,21 +224,34 @@
                 }
 
             }
-            function ResumoLivro(){
-                xmlHttpObj=CreateXmlHttpRequestObject();
-                if(xmlHttpObj){
-                    xmlHttpObj.open("GET","obtermaisinfo.php",true);
-                    xmlHttpObj.onreadystatechange=ImprimirResumo;
-                    xmlHttpObj.send();
+
+            function ResumoLivro() {
+                xmlHttpObj = CreateXmlHttpRequestObject();
+
+
+                if (xmlHttpObj)
+                {
+
+
+                    xmlHttpObj.open("GET", "obtermaisinfo.php", true);
+
+                    // Registo do EventHandler
+                    xmlHttpObj.onreadystatechange = ImprimirResumo;
+                    xmlHttpObj.send(null);
                 }
+
             }
-            function ImprimirResumo(){
-                alert(xmlHttpObj.responseText);
+            
+            function ImprimirResumo() {
+                if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
+                {
+                    alert(xmlHttpObj.responseText);
+                }
             }
             //function infoLivro(titulo) {
             function infoLivro(titulo, editora) {
                 xmlHttpObj = CreateXmlHttpRequestObject();
-                
+
 
                 if (xmlHttpObj)
                 {
@@ -260,88 +269,88 @@
             }
 
             function PrintinfoLivros() {
-        if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
-                {        
-        var docxml = xmlHttpObj.responseXML;
-        alert(xmlHttpObj.responseText);
-                
-                
-                var info = "Informações do Livro:\n";
-                // Preenchimento da string com informações do livro 
-                
-                var titulo = docxml.getElementsByTagName("title");
-                
-                var titulo1 = titulo[0].childNodes[0].nodeValue;
-                info += "Titulo:" + titulo1 + "\n";
-                var autor = docxml.getElementsByTagName("author");
-                
-                var autor1 = autor[0].childNodes[0].nodeValue;
-                info += "Autor:" + autor1 + "\n";
-                var categoria = docxml.getElementsByTagName("category");
-                
-                var categoria1 = categoria[0].childNodes[0].nodeValue;
-                info += "Categoria:" + categoria1 + "\n";
-                var ISBN = docxml.getElementsByTagName("isbn");
-                
-                var ISBN1 = ISBN[0].childNodes[0].nodeValue;
-                info += "ISBN:" + ISBN1 + "\n";
-                var Ano = docxml.getElementsByTagName("publicacao");
-                 
-                var Ano1 = Ano[0].childNodes[0].nodeValue;
-                info += "Ano de Publicacao:" + Ano1 + "\n";
-               
-                alert(info);
-                escolheuEditora(); //coloquei para voltar à primeira página porque estava a dar um erro
+                if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
+                {
+                    var docxml = xmlHttpObj.responseXML;
+                    alert(xmlHttpObj.responseText);
+
+
+                    var info = "Informações do Livro:\n";
+                    // Preenchimento da string com informações do livro 
+
+                    var titulo = docxml.getElementsByTagName("title");
+
+                    var titulo1 = titulo[0].childNodes[0].nodeValue;
+                    info += "Titulo:" + titulo1 + "\n";
+                    var autor = docxml.getElementsByTagName("author");
+
+                    var autor1 = autor[0].childNodes[0].nodeValue;
+                    info += "Autor:" + autor1 + "\n";
+                    var categoria = docxml.getElementsByTagName("category");
+
+                    var categoria1 = categoria[0].childNodes[0].nodeValue;
+                    info += "Categoria:" + categoria1 + "\n";
+                    var ISBN = docxml.getElementsByTagName("isbn");
+
+                    var ISBN1 = ISBN[0].childNodes[0].nodeValue;
+                    info += "ISBN:" + ISBN1 + "\n";
+                    var Ano = docxml.getElementsByTagName("publicacao");
+
+                    var Ano1 = Ano[0].childNodes[0].nodeValue;
+                    info += "Ano de Publicacao:" + Ano1 + "\n";
+
+                    alert(info);
+                    escolheuEditora(); //coloquei para voltar à primeira página porque estava a dar um erro
+                }
+
             }
-            
-        }
 
 
         </script>
     </head>
-   
+
     <body onload="carregarCategorias();">
-        
+
         <form action="" method="get" >
             <div id="divGeal" class="geral">
-            <div id="widjet" class="box">
-            Categorias :    
-            <select id="selectCategoria" onchange="escolheuCategoria();"> </select>
+                <div id="widjet" class="box">
+                    Categorias :    
+                    <select id="selectCategoria" onchange="escolheuCategoria();"> </select>
 
-            <p >
-                Numero de Livros a mostrar: <input type="text" size="3" id="nLivros" value="50" onchange="escolheuCategoria();"/> 
-            </p>
-            <select id="selectLivros" >
+                    <p >
+                        Numero de Livros a mostrar: <input type="text" size="3" id="nLivros" value="50" onchange="escolheuCategoria();"/> 
+                    </p>
+                    <select id="selectLivros" >
 
-            </select>
-            </div>
-            <div id="Page" class="box1">
-                <br>
-                Editora:
-                <select id="selectEditora" onchange="escolheuEditora();">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <button onclick="ResumoLivro();">Click</button>
-                <p>
-                    Numero de Livros a mostrar na editora: <input type="text" size="3" id="nTopLivros" value="10" onchange="escolheuEditora();"/> 
-                </p>
-                
-                <br>
-                <table id="idTabela" border="1">
+                    </select>
+                </div>
+                <div id="Page" class="box1">
+                    <br>
+                    Editora:
+                    <select id="selectEditora" onchange="escolheuEditora();">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <input type="button" onClick="ResumoLivro();" value="Click"/>
+                    <p>
+                        Numero de Livros a mostrar na editora: <input type="text" size="3" id="nTopLivros" value="10" onchange="escolheuEditora();"/> 
+                    </p>
+
+                    <br>
+                    <table id="idTabela" border="1">
 
 
-                </table>
-                <div id="div1">
+                    </table>
+                    <div id="div1">
+
+                    </div>
 
                 </div>
-                
-            </div>
-                
+
             </div>
         </form>
 
     </body>
-   
+
 </html>
