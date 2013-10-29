@@ -228,6 +228,17 @@
                 }
 
             }
+            function ResumoLivro(){
+                xmlHttpObj=CreateXmlHttpRequestObject();
+                if(xmlHttpObj){
+                    xmlHttpObj.open("GET","obtermaisinfo.php",true);
+                    xmlHttpObj.onreadystatechange=ImprimirResumo;
+                    xmlHttpObj.send();
+                }
+            }
+            function ImprimirResumo(){
+                alert(xmlHttpObj.responseText);
+            }
             //function infoLivro(titulo) {
             function infoLivro(titulo, editora) {
                 xmlHttpObj = CreateXmlHttpRequestObject();
@@ -312,10 +323,11 @@
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
-
+                <button onclick="ResumoLivro();">Click</button>
                 <p>
                     Numero de Livros a mostrar na editora: <input type="text" size="3" id="nTopLivros" value="10" onchange="escolheuEditora();"/> 
                 </p>
+                
                 <br>
                 <table id="idTabela" border="1">
 
@@ -324,7 +336,9 @@
                 <div id="div1">
 
                 </div>
+                
             </div>
+                
             </div>
         </form>
 
