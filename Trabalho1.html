@@ -273,8 +273,7 @@
                 if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
                 {
                     var docxml = xmlHttpObj.responseXML;
-                    alert(xmlHttpObj.responseText);
-
+                    
 
                     var info = "Informações do Livro:\n";
                     //alert(docxml);
@@ -287,27 +286,22 @@
 
 
                     var titulo1 = titulo[0].childNodes[0].nodeValue;
-                    info += "Titulo:" + titulo1 + "\n";
                     info += "<strong>Titulo:</strong>" + titulo1 + "<br>";
                     var autor = docxml.getElementsByTagName("author");
 
                     var autor1 = autor[0].childNodes[0].nodeValue;
-                    info += "Autor:" + autor1 + "\n";
                     info += "<strong>Autor:</strong>" + autor1 + "<br>";
                     var categoria = docxml.getElementsByTagName("category");
 
                     var categoria1 = categoria[0].childNodes[0].nodeValue;
-                    info += "Categoria:" + categoria1 + "\n";
                     info += "<strong>Categoria:</strong>" + categoria1 + "<br>";
                     var ISBN = docxml.getElementsByTagName("isbn");
 
                     var ISBN1 = ISBN[0].childNodes[0].nodeValue;
-                    info += "ISBN:" + ISBN1 + "\n";
                     info += "<strong>ISBN:</strong>" + ISBN1 + "<br>";
                     var Ano = docxml.getElementsByTagName("publicacao");
 
                     var Ano1 = Ano[0].childNodes[0].nodeValue;
-                    info += "Ano de Publicacao:" + Ano1 + "\n";
                     info += "<strong>Ano de Publicacao:</strong>" + Ano1 + "<br>";
                     if (checkresumo.checked) {
 
@@ -315,7 +309,6 @@
                         var resumo1 = resumo[0].childNodes[0].nodeValue;
                         info += "<strong>Resumo:</strong>" + resumo1 + "<br>";
 
-                        alert(info);
                     }
                     var left = (screen.width * 0.5) - (200 * 0.5);
                     var top = (screen.height * 0.5) - (100 * 0.5);
@@ -354,7 +347,6 @@
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
-                    <input type="button" onClick="ResumoLivro();" value="Click"/>
                     <br>
                     <!--<input TYPE="checkbox" id="checkcapa" style="display:none" Name="Item1" Value="Capa" ><p id="textocapa" style="display:none"> Apresentar Capa</p>-->
                     <INPUT TYPE="checkbox" id="checkresumo" style="display:none" Name="Item2" Value="Resumo" ><p id="textoresumo" style="display:none">Apresentar Resumo</p>
