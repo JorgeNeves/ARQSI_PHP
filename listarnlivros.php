@@ -22,7 +22,7 @@ echo "</tudo>";
     $hora = date("H:i:s");
     $data = date("Y-n-j");
 
-    $link = $_SERVER['SERVER_NAME'] . $_SERVER["PHP_SELF"] . "?neditora=" . $editora . "&nlivros=" . $nlivros;
+    $link = "http://" .  $_SERVER['SERVER_NAME'] . $_SERVER["PHP_SELF"] . "?neditora=" . $editora . "&nlivros=" . $nlivros;
 
     $sql = "INSERT INTO LOG (User, Hora,Data,Link) Values('$user','$hora','$data','$link')";
 

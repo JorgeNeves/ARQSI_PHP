@@ -15,7 +15,7 @@
     $hora = date("H:i:s");
     $data = date("Y-n-j");
 
-    $link = $_SERVER['SERVER_NAME'] . $_SERVER["PHP_SELF"] . "?categoria=" .$cat;
+    $link = "http://" .  $_SERVER['SERVER_NAME'] . $_SERVER["PHP_SELF"] . "?categoria=" .$cat;
 
     $sql = "INSERT INTO LOG (User, Hora,Data,Link) Values('$user','$hora','$data','$link')";
 
