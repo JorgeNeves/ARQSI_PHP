@@ -1,9 +1,12 @@
+<!--Obtem os numero de livros a listar e a editora correspondente para obter a informação do livro
+Imprime no formato xml-->
 <?php
 $nlivros = $_GET['nlivros'];
 $editora = $_GET['neditora'];
 header("Content-Type:text/xml");
 echo "<?xml version=\"1.0\"?>";
 echo "<tudo>";
+//Conforme o valor na variavel $editora a função obtem os n primeiros livros dessa editora
 if (intval($editora) == 1) {
     echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora1.php?numero=" . $nlivros);
 }else if(intval($editora) == 2) {
@@ -14,7 +17,7 @@ if (intval($editora) == 1) {
 echo "<editora>" .$editora . "</editora>";
 echo "</tudo>";
 
-
+//Função para registar o log no servidor
     require_once 'LogDAL.php';
     $dal = new LogDAL();
 
