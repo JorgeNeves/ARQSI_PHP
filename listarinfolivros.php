@@ -1,7 +1,7 @@
-<!--Recebe como parametro o titulo,a editora desse livro,o isbn,e a indicação se o utilizador pretendia 
-que fosse apresentada a capa e o resumo imprime as informações pedidas no formato xml-->
 <?php
 
+//Recebe como parametro o titulo,a editora desse livro,o isbn,e a indicação se o utilizador pretendia 
+//que fosse apresentada a capa e o resumo imprime as informações pedidas no formato xml
 $titulo = $_GET['titulo'];
 $editora = $_GET['editora'];
 $linkcapa = $_GET['capa'];

@@ -8,6 +8,7 @@
     echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~i110603/editora3.php?categoria=" .$cat);
     echo "</tudo>";
     
+    //registar o log no servidor
     require_once 'LogDAL.php';
     $dal = new LogDAL();
 

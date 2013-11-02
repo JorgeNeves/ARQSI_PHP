@@ -3,7 +3,7 @@
 require_once '3editora_json.php';
 
 $arr_editora = json_decode($json_str, true);
-
+// verifica de o parametro é categoria e se querem todas as categorias
 if ($_GET['categoria'] == "todas") {
     foreach ($arr_editora as $books) {
         foreach ($books as $book) {
@@ -13,7 +13,7 @@ if ($_GET['categoria'] == "todas") {
         }
     }
 }
-
+//verifica se o parametro é categoria e se for diferente de todas faz echo dos livros daquela categoria
 if (isset($_GET['categoria']) && $_GET['categoria'] != "todas") {
     foreach ($arr_editora as $books) {
         foreach ($books as $book) {
@@ -30,7 +30,7 @@ if (isset($_GET['categoria']) && $_GET['categoria'] != "todas") {
         }
     }
 }
-
+//verifica se o parametro é numero e faz echo do numero de livros que foi pedido
 if (isset($_GET['numero'])) {
     foreach ($arr_editora as $books) {
         foreach ($books as $book) {
@@ -46,6 +46,7 @@ if (isset($_GET['numero'])) {
     }
 }
 
+//verifica se o parametro é titulo e faz echo dos dados do livro com aquele titulo
 if (isset($_GET['titulo'])){
     $titulo1 = str_replace('%20', ' ', $_GET['titulo']);
     foreach ($arr_editora as $books) {

@@ -1,5 +1,5 @@
 <?php
-
+// vai pesquisar todas as categorias de todas as editoras e retornar
 header("Content-Type:text/xml");
 echo "<?xml version=\"1.0\"?>";
 echo "<tudo>";
@@ -8,6 +8,7 @@ echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~arqsi/trabalho1/editora1
 echo file_get_contents("http://phpdev2.dei.isep.ipp.pt/~i110603/editora3.php?categoria=todas");
 echo "</tudo>";
 
+//registar o log no servidor
 require_once 'LogDAL.php';
 $dal = new LogDAL();
 

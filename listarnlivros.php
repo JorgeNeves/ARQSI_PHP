@@ -1,6 +1,6 @@
-<!--Obtem os numero de livros a listar e a editora correspondente para obter a informação do livro
-Imprime no formato xml-->
 <?php
+/*Obtem os numero de livros a listar e a editora correspondente para obter a informação do livro
+Imprime no formato xml*/
 $nlivros = $_GET['nlivros'];
 $editora = $_GET['neditora'];
 header("Content-Type:text/xml");

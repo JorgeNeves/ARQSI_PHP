@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 
 <html>
@@ -136,18 +137,17 @@
                         var tname = nodelist[i].childNodes[0].nodeValue;
                         var opt = document.createElement('option');
                         opt.appendChild(document.createTextNode(tname));
-                        var op = "<option> " + tname + "</option>";
+                        
                         // alteração do conteúdo textual do div
                         document.getElementById("selectLivros").appendChild(opt);
                     }
                 }
             }
 
-            //Ocorre quando a editora é alterada
             function escolheuEditora() {
 
                 xmlHttpObj = CreateXmlHttpRequestObject();
-                //Obtem a editora e o numero de livros a apresentar conforme o que o utilizador definiu
+
                 var editora = document.getElementById("selectEditora").value;
                 var nlivros = document.getElementById("nTopLivros").value;
 
@@ -163,68 +163,53 @@
                 }
 
             }
-
-            //Obtem por parametro a pagina atual  
-            //Obtem a resposta em XML enviada
-            //Apresenta a opção para o utilizador puder escolher apresentar o resumo
-            //Apresenta o n primeiros livros de cada editora
-
             function escolheuNLivroEditora(pag) {
 
                 if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
                 {
                     var docxml = xmlHttpObj.responseXML;
-
-                    // lista de nós com Tag title                   
+                    
+                    // lista de nós com Tag Categoria                    
                     var nodelist = docxml.getElementsByTagName("title");
-                    //lista de nós com Tag isbn
-                    var nodelist2 = docxml.getElementsByTagName("isbn");
-                    //lista de nós com Tag editora
+                    
+                    var nodelist2=docxml.getElementsByTagName("isbn");
                     var editora = docxml.getElementsByTagName("editora");
-
-                    //var isbn = docxml.getElementsByTagName("isbn");
+                    
+                    var isbn = docxml.getElementsByTagName("isbn");
+                    
                     //var checkcapa = document.getElementById("checkcapa");
                     //checkcapa.style.display = "inline";
-
-                    //Obtem o checkbox para apresentar o resumo e apresenta-o
                     var checkresumo = document.getElementById("checkresumo");
                     checkresumo.style.display = "inline";
+                    
                     //var txtcapa = document.getElementById("textocapa");
                     //txtcapa.style.display = "inline";
-
-                    //Obtem o texto para apresentar o resumo e apresenta-o
                     var txtresumo = document.getElementById("textoresumo");
                     txtresumo.style.display = "inline";
 
                     var editora1 = editora[0].childNodes[0].nodeValue;
 
-                    //var isbn1 = isbn[0].childNodes[0].nodeValue;
-                    //Obtem a tabela
+                    var isbn1 = isbn[0].childNodes[0].nodeValue;
                     var tabela = document.getElementById("idTabela");
-                    //Obtem o tamanho do nodelist
+
                     var tam = nodelist.length;
-                    //elimina todos os membros da tabela
+                    
                     while (tabela.firstChild) {
                         tabela.removeChild(tabela.firstChild);
                     }
-                    //Adiciona à tabela o cabeçalho
+                    
                     var tr = document.createElement("tr");
                     var th = document.createElement("th");
                     var tht = document.createTextNode("Titulo do Livro");
                     th.appendChild(tht);
                     tr.appendChild(th);
                     tabela.appendChild(tr);
-                    //Caso a pagina chegada por parametro seja null atribui o valor 1
                     if (isNaN(pag)) {
                         pag = 1;
                     }
-                    //Apresenta 5 livros por casa pagina
-                    //Em apresenta o nome do livro como hiperligação e acrescenta-lhe a função infolivro no caso de ser clicado
-                    //Leva como parametros dessa função o seu nome,a sua editora e o seu isbn
-
                     for (i = pag * 5 - 5; i < pag * 5; i++) {
                         var tname = nodelist[i].childNodes[0].nodeValue;
-                        var tisbn = nodelist2[i].childNodes[0].nodeValue;
+                        var tisbn=nodelist2[i].childNodes[0].nodeValue;
                         tname = tname.trim();
                         var tr1 = document.createElement('tr');
                         var td = document.createElement('td');
@@ -233,23 +218,19 @@
                         var titulo = document.createTextNode(tname);
                         link.appendChild(titulo);
 
+                        //var tdt=document.createTextNode(tname);
                         td.appendChild(link);
                         tr1.appendChild(td);
                         tabela.appendChild(tr1);
                     }
-                    //Obtem a div para acrescentar as paginas
                     var div = document.getElementById('div1');
-                    //Elimina as paginas que já lá estejam
                     while (div.firstChild) {
                         div.removeChild(div.firstChild);
                     }
                     div.appendChild(document.createTextNode("Página:"));
-
-                    //O numero de paginas é o numero de elementos a dividir por 5
                     var npags = tam / 5;
 
                 }
-                //apresenta a pagina com hiperligação para esta mesma função com a pagina em que o livro se encontra
                 for (i = 0; i < npags; i++) {
                     var pag = document.createElement('a');
                     pag.setAttribute("href", "javascript:escolheuNLivroEditora(" + (i + 1) + ")");
@@ -272,8 +253,6 @@
                  
                  var capa = "sim";
                  }*/
-                //Obtem a checkbox checkresumo do documento e caso esteja marcada atribui sim à variavel resumo
-                //A variavel resumo define que o utilizador pretende ver o resumo do livro
                 var checkresumo = document.getElementById("checkresumo");
                 if (checkresumo.checked) {
                     var resumo = "sim";
@@ -282,9 +261,9 @@
                 {
                     // Definição do URL para efectuar pedido HTTP - método GET
                     var titulo1 = encodeURIComponent(titulo.trim());
-
+                    //var editora = document.getElementById("selectEditora").value;
                     xmlHttpObj.open("GET", "listarinfolivros.php?titulo=" + titulo1 + "&editora=" + editora + "&resumo=" + resumo + "&isbn=" + isbn, true);
-
+                    //xmlHttpObj.open("GET", "listarinfolivros.php?titulo=" + titulo1,true);
 
                     // Registo do EventHandler
                     xmlHttpObj.onreadystatechange = PrintinfoLivros;
@@ -295,24 +274,21 @@
 
             function PrintinfoLivros() {
 
-                //Obtem a resposta no formato xml com as informações do livro
+
                 if (xmlHttpObj.readyState == 4 && xmlHttpObj.status == 200) // resposta do servidor completa
                 {
                     var docxml = xmlHttpObj.responseXML;
-
+                    
 
                     var info = "Informações do Livro:\n";
-                    //obtem a checkbox checkresumo do documento
+                    //alert(docxml);
                     var checkresumo = document.getElementById("checkresumo");
                     //var checkcapa=document.getElementById("checkcapa");
-                    // Preenchimento da string com informações do livro 
-
                     var info = "<h3>Informações do Livro:</h3><br>";
-
                     // Preenchimento da string com informações do livro 
-                    //A string sera utilizada para apresentação numa nova janela popup
+
                     var titulo = docxml.getElementsByTagName("title");
-                    
+
 
                     var titulo1 = titulo[0].childNodes[0].nodeValue;
                     info += "<strong>Titulo:</strong>" + titulo1 + "<br>";
@@ -332,26 +308,20 @@
 
                     var Ano1 = Ano[0].childNodes[0].nodeValue;
                     info += "<strong>Ano de Publicacao:</strong>" + Ano1 + "<br>";
-                    
-                    //Caso a checkbox esteja marcada adiciona o resumo mesmo que este não exista na base de dados
                     if (checkresumo.checked) {
 
                         var resumo = docxml.getElementsByTagName("resumo");
                         var resumo1 = resumo[0].childNodes[0].nodeValue;
                         info += "<strong>Resumo:</strong>" + resumo1 + "<br>";
+
                     }
-                    //Definições para a nova janela popup
-                    
-                    var left = (screen.width * 0.5) - (200 * 0.5); //Centra no ecra no eixo y
-                    var top = (screen.height * 0.5) - (100 * 0.5); //Centra no ecra no eixo x
-                    //Cria uma nova janela com scroll e a posição definida anteriormente
+                    var left = (screen.width * 0.5) - (200 * 0.5);
+                    var top = (screen.height * 0.5) - (100 * 0.5);
                     novaJanela = window.open("Informações do Livro", 'Informações do livro', 'resizable=no,scroolbars=yes,top=' + top + ',left=' + left + ',width=250,height=500');
-                    //Escreve na nova janela a string criada anteriormente no formato HTML
                     novaJanela.document.write(info);
                     novaJanela.focus();
-                    
-                    //Após apresentação do livro selecionado volta à pagina 1
-                    escolheuEditora(); 
+
+                    escolheuEditora(); //coloquei para voltar à primeira página porque estava a dar um erro
                 }
 
             }
